@@ -1,0 +1,42 @@
+127.0.0.1:80 {
+    tls off
+
+    log stdout
+    errors stdout
+
+    proxy / 127.0.0.1:4242
+}
+
+127.0.0.1:81 {
+    tls off
+
+    log stdout
+    errors stdout
+
+    proxy / 127.0.0.1:4242 {
+        transparent
+    }
+}
+
+127.0.0.1:82 {
+    tls off
+
+    log stdout
+    errors stdout
+
+    proxy / 127.0.0.1:4242 {
+        websocket
+    }
+}
+
+127.0.0.1:83 {
+    tls off
+
+    log stdout
+    errors stdout
+
+    proxy / 127.0.0.1:4242 {
+        transparent
+        websocket
+    }
+}

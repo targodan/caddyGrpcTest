@@ -22,3 +22,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+
+# The caddy executable
+caddy
+
+# Protobuf generated files
+*.pb.go

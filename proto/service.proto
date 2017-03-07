@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+message EchoRequest {
+    string message = 1;
+    int32 count = 2;
+}
+message EchoResponse {
+    string message = 1;
+}
+
+service TestService {
+    rpc SimpleEcho(EchoRequest) returns (EchoResponse) {}
+    rpc ServerStreamEcho(EchoRequest) returns (stream EchoResponse) {}
+    rpc ClientStreamEcho(stream EchoRequest) returns (EchoResponse) {}
+    rpc BidirectionalStreamEcho(stream EchoRequest) returns (stream EchoResponse) {}
+}
