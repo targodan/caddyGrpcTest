@@ -4,9 +4,14 @@ package client
 
 import "./pb"
 import "google.golang.org/grpc"
+import "google.golang.org/grpc/credentials"
 
 func Connect(host string) (pb.TestServiceClient, *grpc.ClientConn, error) {
-	conn, err := grpc.Dial(host, grpc.WithInsecure())
+	creds, err := credentials.NewClientTLSFromFile("../server.crt", "")
+	if err != nil {
+		return nil, nil, err
+	}
+	conn, err := grpc.Dial(host, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		return nil, nil, err
 	}

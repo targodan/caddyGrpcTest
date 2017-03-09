@@ -10,6 +10,7 @@ import (
 	"golang.org/x/net/context"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 type testServiceServer struct{}
@@ -58,7 +59,12 @@ func StartServer(host string) {
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	grpcServer := grpc.NewServer()
+	creds, err := credentials.NewServerTLSFromFile("../server.crt", "../server.key")
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
+	grpcServer := grpc.NewServer(grpc.Creds(creds))
+	// grpcServer := grpc.NewServer()
 	pb.RegisterTestServiceServer(grpcServer, &testServiceServer{})
 	grpcServer.Serve(lis)
 }

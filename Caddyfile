@@ -1,42 +1,47 @@
-127.0.0.1:80 {
-    tls off
+127.0.0.1:443 {
+    import tls.caddy
 
     log stdout
     errors stdout
 
-    proxy / 127.0.0.1:4242
+    proxy / https://127.0.0.1:4242 {
+        insecure_skip_verify
+    }
 }
 
 127.0.0.1:81 {
-    tls off
+    import tls.caddy
 
     log stdout
     errors stdout
 
-    proxy / 127.0.0.1:4242 {
+    proxy / http://127.0.0.1:4242 {
         transparent
+        insecure_skip_verify
     }
 }
 
 127.0.0.1:82 {
-    tls off
+    import tls.caddy
 
     log stdout
     errors stdout
 
-    proxy / 127.0.0.1:4242 {
+    proxy / http://127.0.0.1:4242 {
         websocket
+        insecure_skip_verify
     }
 }
 
 127.0.0.1:83 {
-    tls off
+    import tls.caddy
 
     log stdout
     errors stdout
 
-    proxy / 127.0.0.1:4242 {
+    proxy / http://127.0.0.1:4242 {
         transparent
         websocket
+        insecure_skip_verify
     }
 }

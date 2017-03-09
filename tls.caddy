@@ -1,0 +1,3 @@
+tls server.crt server.key {
+    #ciphers RSA-AES256-CBC-SHA
+}
