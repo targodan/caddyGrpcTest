@@ -44,7 +44,7 @@ $ go generate
 The tests can run on multiple servers.
 In order for this to work you are required to set the environment variable `TEST_HOSTS` in the format `host1:port1,host2:port2,...`.
 This allowes you to test multiple Caddy configurations at once, as well as being able to test the unproxied server.
-E. g. `TEST_HOSTS=127.0.0.1:80,127.0.0.1:4242`.
+E. g. `TEST_HOSTS=127.0.0.1:443,127.0.0.1:4242`.
 
 So to run the tests do
 
@@ -54,6 +54,8 @@ So to run the tests do
 4. Run the tests. `$ cd client && go test -v`
 
 Grpc will actually write some errors to the `stderr` on its own. So if you just want to see what works and what doesn't just run `go test -v 2>/dev/null` instead. I would advise the `-v` flag though because otherwise you won't see successfull tests listed.
+
+If you want to sniff the network traffic you can `export SSLKEYLOGFILE="/path/to/file"` and use that file in wireshark in order to decode the encrypted data.
 
 # License
 

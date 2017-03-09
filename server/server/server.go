@@ -1,9 +1,11 @@
 package server
 
 import (
+	"crypto/tls"
 	"io"
 	"log"
 	"net"
+	"os"
 
 	"./pb"
 
@@ -59,10 +61,26 @@ func StartServer(host string) {
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	creds, err := credentials.NewServerTLSFromFile("../server.crt", "../server.key")
+	cert, err := tls.LoadX509KeyPair("../server.crt", "../server.key")
 	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
+		log.Fatalf("Failed to load cert: %v", err)
 	}
+	tlsConfig := &tls.Config{
+		Certificates:       []tls.Certificate{cert},
+		InsecureSkipVerify: true,
+	}
+	sslKeyLogfile := os.Getenv("SSLKEYLOGFILE")
+	if sslKeyLogfile != "" {
+		var w *os.File
+		var err error
+		w, err = os.OpenFile(sslKeyLogfile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0600)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+		tlsConfig.KeyLogWriter = w
+	}
+	creds := credentials.NewTLS(tlsConfig)
 	grpcServer := grpc.NewServer(grpc.Creds(creds))
 	// grpcServer := grpc.NewServer()
 	pb.RegisterTestServiceServer(grpcServer, &testServiceServer{})
